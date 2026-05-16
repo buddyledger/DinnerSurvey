@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Old Yale Brewing — Dinner Order Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1310;
+    --bg-2: #241a15;
+    --card: #2d201a;
+    --card-2: #382820;
+    --line: #4a3528;
+    --amber: #e8a04a;
+    --amber-bright: #f5b860;
+    --cream: #f4e4cf;
+    --rust: #c1542a;
+    --muted: #a08a72;
+    --text: #f0e2cc;
+    --text-dim: #c9b89c;
+    --shadow: 0 4px 20px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse at top, rgba(232, 160, 74, .08), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(193, 84, 42, .06), transparent 50%);
+    min-height: 100vh;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+
+  /* HEADER */
+  header.hero {
+    text-align: center;
+    padding: 32px 12px 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+  .kicker {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .35em;
+    color: var(--amber);
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-style: italic;
+    margin: 0 0 8px;
+    font-size: clamp(34px, 7vw, 52px);
+    line-height: 1;
+    color: var(--cream);
+  }
+  .sub {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* SUBMITTER BLOCK */
+  .submitter-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+  }
+  .submitter-card h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .15em;
+    font-size: 18px;
+    margin: 0 0 14px;
+    color: var(--amber);
+  }
+  label.field {
+    display: block;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  input[type="text"], input[type="email"], textarea, select {
+    width: 100%;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 11px 12px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(232, 160, 74, .15);
+  }
+  textarea { resize: vertical; min-height: 64px; }
+
+  /* PERSON CARDS */
+  .people-section h2.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .2em;
+    color: var(--amber);
+    font-size: 16px;
+    margin: 8px 0 16px;
+  }
+  .person-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 18px 8px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .person-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .person-num {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--cream);
+  }
+  .person-num span.idx {
+    color: var(--amber);
+    font-weight: 600;
+  }
+  .remove-btn {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    transition: all .15s;
+  }
+  .remove-btn:hover { color: var(--rust); border-color: var(--rust); }
+
+  .person-fields {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media (min-width: 540px) {
+    .person-fields.two-col { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* CATEGORIES (collapsible) */
+  .categories { margin-top: 8px; }
+  details.category {
+    border-top: 1px solid var(--line);
+    padding: 0;
+  }
+  details.category:last-child { border-bottom: 1px solid var(--line); }
+  details.category > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+  details.category > summary::-webkit-details-marker { display: none; }
+  .cat-title {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .18em;
+    color: var(--cream);
+    font-size: 15px;
+  }
+  .cat-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .selected-pill {
+    background: rgba(232, 160, 74, .15);
+    color: var(--amber);
+    padding: 3px 9px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: .04em;
+    display: none;
+  }
+  .selected-pill.active { display: inline-block; }
+  .chev {
+    transition: transform .2s;
+    color: var(--muted);
+    font-size: 18px;
+  }
+  details.category[open] .chev { transform: rotate(90deg); color: var(--amber); }
+
+  .items {
+    padding: 4px 4px 16px;
+    display: grid;
+    gap: 6px;
+  }
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .12s;
+    border: 1px solid transparent;
+  }
+  .item:hover { background: var(--card-2); }
+  .item.checked {
+    background: rgba(232, 160, 74, .08);
+    border-color: rgba(232, 160, 74, .3);
+  }
+  .item input[type="checkbox"] {
+    margin: 4px 0 0;
+    accent-color: var(--amber);
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .item-body { flex: 1; min-width: 0; }
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .item-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14.5px;
+  }
+  .item-price {
+    color: var(--amber);
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .item-desc {
+    color: var(--text-dim);
+    font-size: 12.5px;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  /* ADD PERSON BTN */
+  .add-person {
+    width: 100%;
+    background: transparent;
+    border: 2px dashed var(--line);
+    color: var(--amber);
+    padding: 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .25em;
+    font-size: 15px;
+    transition: all .15s;
+    margin-bottom: 28px;
+  }
+  .add-person:hover {
+    border-color: var(--amber);
+    background: rgba(232, 160, 74, .06);
+  }
+
+  /* SUBMIT */
+  .submit-bar {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .summary-line {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+  .summary-line strong { color: var(--cream); }
+  .submit-btn {
+    background: var(--amber);
+    color: #1a1310;
+    border: none;
+    padding: 15px 44px;
+    border-radius: 100px;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .3em;
+    font-size: 17px;
+    cursor: pointer;
+    transition: all .18s;
+    box-shadow: 0 4px 16px rgba(232, 160, 74, .3);
+  }
+  .submit-btn:hover:not(:disabled) {
+    background: var(--amber-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(232, 160, 74, .45);
+  }
+  .submit-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  /* STATUS */
+  .status {
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.success {
+    background: rgba(106, 160, 80, .15);
+    color: #b8d99c;
+    border: 1px solid rgba(106, 160, 80, .35);
+  }
+  .status.error {
+    background: rgba(193, 84, 42, .15);
+    color: #f0a884;
+    border: 1px solid rgba(193, 84, 42, .35);
+  }
+
+  /* SHEET LINK */
+  .sheet-link-box {
+    text-align: center;
+    margin-top: 18px;
+    padding: 14px;
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .sheet-link-box a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--amber);
+  }
+
+  .footer-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 36px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Old Yale Brewing — Abbotsford</div>
+    <h1>What are you ordering?</h1>
+    <p class="sub">Pick your food &amp; drinks. Add as many family members as you need.</p>
+  </header>
+
+  <!-- SUBMITTER -->
+  <div class="submitter-card">
+    <h2>Who's filling this out?</h2>
+    <label class="field" for="submitter">Your name</label>
+    <input id="submitter" type="text" placeholder="e.g. Jordan" autocomplete="name" />
+  </div>
+
+  <!-- PEOPLE -->
+  <div class="people-section">
+    <h2 class="section-title">— Orders —</h2>
+    <div id="people"></div>
+  </div>
+
+  <button class="add-person" id="addPerson">＋ Add another person</button>
+
+  <!-- SUBMIT -->
+  <div class="submit-bar">
+    <div class="summary-line"><strong id="totalPeople">1</strong> person · <strong id="totalItems">0</strong> items selected</div>
+    <button class="submit-btn" id="submitBtn">Submit Orders</button>
+    <div class="status" id="status"></div>
+    <div class="sheet-link-box" id="sheetLinkBox" style="display:none;">
+      View all responses: <a id="sheetLink" target="_blank" rel="noopener">open shared sheet</a>
+    </div>
+  </div>
+
+  <div class="footer-note">Menu sourced from oldyalebrewing.com</div>
+</div>
+
+<script>
+/* =============================================================
+   CONFIG — PASTE YOUR APPS SCRIPT WEB APP URL HERE AFTER DEPLOY
+   ============================================================= */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypdQZSLSAse-Lpse8gL7n2Y-o4vQCvaEyZXP2OCIiY8WA_K-RFXQPLnOkwmuYXJhE/exec";
+const SHARED_SHEET_VIEW_URL = ""; // optional: paste read-only sheet share link
+
+/* =============================================================
+   MENU DATA — from Old Yale Brewing Abbotsford
+   ============================================================= */
+const MENU = [
+  { cat: "Featured Eats", items: [
+    { n: "Holy Perogi", p: "16.50", d: "potato cheddar perogies, caramelized onions, crispy bacon, sour cream" },
+    { n: "Loaded Dirty Fries", p: "22.00", d: "birria beef, cheddar, mozza & monterey jack, gravy, pickled onions, lime crema, cilantro" },
+    { n: "Jalapeno Popper Smash Burger", p: "24.50", d: "two smash patties, jalapeno whipped cream cheese, mozza, jalapeno ranch, espresso bacon jam" },
+    { n: "Mini Quesadillas", p: "18.50", d: "birria beef, cheddar, mozza & monterey jack, onion, consomme, lime" },
+    { n: "Prawn Pesto Pizza", p: "25.50", d: "citrus marinated prawns, sun-dried tomatoes, creamy pesto, feta, mozza, garlic oil sauce" },
+    { n: "Bibimbap Bowl", p: "25.00", d: "shaved beef, crispy fried rice, kimchi, edamame, pickled daikon, carrots, korean sauce, fried egg" }
+  ]},
+  { cat: "Campfire Starters", items: [
+    { n: "Savoury Bae-gnets", p: "13.50", d: "fluffy dough squares tossed in garlic oil, parmesan, parsley, warm marinara" },
+    { n: "Jalapeno Popper Bites", p: "19.50", d: "panko-fried jalapeno, cream cheese, bacon, cheddar, ranch" },
+    { n: "Northwest Nachos (small)", p: "18.50", d: "nacho spiced corn chips, beans, jalapeno, peppers, corn, onion, sour cream, salsa" },
+    { n: "Northwest Nachos (large)", p: "26.00", d: "nacho spiced corn chips, beans, jalapeno, peppers, corn, onion, sour cream, salsa" },
+    { n: "Wings or Cauli-Wings", p: "19.50", d: "all dressed, salt + pepper, sweet chili, korean, BBQ or hot, with ranch" },
+    { n: "Lettuce Wraps", p: "22.50", d: "chicken, hoisin, sprouts, peppers, onions, water chestnuts, crispy noodles, sriracha aioli" },
+    { n: "Spinach + Artichoke Dip", p: "19.50", d: "served with house-made corn chips" },
+    { n: "Buffalo Chicken Dip", p: "19.50", d: "creamy buffalo chicken, cheddar, green onion, corn chips" },
+    { n: "Boujee Fries", p: "13.00", d: "crispy fries, truffle oil, herbs, grana padano, garlic aioli" },
+    { n: "Hot Chicken n' Pickles", p: "17.00", d: "crispy fried chicken bites, nashville spice, hot pickles, creamy dill" }
+  ]},
+  { cat: "Trailside Tacos", items: [
+    { n: "Fried Chicken Tacos", p: "19.50", d: "jalapeno ranch, elote salsa, feta, pickled onions, cilantro, tajin" },
+    { n: "Pulled Pork Tacos", p: "19.00", d: "pulled pork, coleslaw, pineapple salsa, chipotle aioli, cilantro" },
+    { n: "Steak Tacos", p: "19.50", d: "thinly sliced steak, elote salsa, red onion, feta, avocado crema, chipotle aioli" },
+    { n: "Grilled Prawn Tacos", p: "20.50", d: "grilled prawns, coleslaw, pineapple salsa, avocado crema, pickled onion" }
+  ]},
+  { cat: "Mt. Poutines", items: [
+    { n: "Classic Poutine", p: "19.50", d: "fries, cheese curds, green onions, gravy" },
+    { n: "Pulled Pork Poutine", p: "21.50", d: "pulled pork, fries, cheese curds, apple slaw, green onion, bbq sauce, gravy" },
+    { n: "Cheeseburger Poutine", p: "22.50", d: "beef, bacon, fries, cheese curds, cheddar, green onion, pickles, burger sauce, gravy" },
+    { n: "Hot Chicken Poutine", p: "22.50", d: "hot fried chicken, fries, cheese curds, green onion, gravy, ranch" },
+    { n: "Poutine Flight (3)", p: "23.50", d: "choose any three mt. poutines" }
+  ]},
+  { cat: "Basecamp Burgers + Sammys", items: [
+    { n: "Let's Smash Burger", p: "21.50", d: "two angus smash patties, cheddar, onion, pickles, burger sauce, garlic aioli" },
+    { n: "In Da Clubhouse Sammy", p: "26.00", d: "crispy fried chicken, honey mustard slaw, thicc bacon, tomato, ciabatta" },
+    { n: "Happy Camper Burger", p: "24.00", d: "angus beef, thicc bacon, arugula, red onion, pickles, cheddar, burger sauce" },
+    { n: "Apple + Brie Sammy", p: "24.50", d: "grilled chicken, apple, brie, arugula, fruit jam, garlic aioli, sourdough" },
+    { n: "Hot Honey Fried Chicken Burger", p: "25.00", d: "fried chicken, coalho cheese, hot honey, arugula, garlic mayo" },
+    { n: "The Beef Dipper", p: "26.00", d: "slow cooked beef, caramelized onions, horseradish aioli, garlic toast, au jus" }
+  ]},
+  { cat: "West Coast Pizza", items: [
+    { n: "Hiker's Hot Honey", p: "24.50", d: "spicy soppressata, mozza, tomato sauce, roasted garlic, chili honey" },
+    { n: "Baked Potato Pizza", p: "24.00", d: "potatoes, bacon, corn, mozza, cheddar, green onion, creamy dill, sour cream" },
+    { n: "Big Daddy BBQ Chicken", p: "24.50", d: "chicken, bbq sauce, mozza, red onion, cilantro" },
+    { n: "Pineapple Peak", p: "24.00", d: "spicy grilled pineapple, crispy ham, bacon, sweet onion, mozza, chili flakes" },
+    { n: "Sausage Fest", p: "25.50", d: "chorizo, spicy soppressata, ham, bacon, mozza, tomato sauce" }
+  ]},
+  { cat: "Greens + Bowls", items: [
+    { n: "Campfire Caesar", p: "18.50", d: "romaine, croutons, fried capers, grana padano, caesar dressing" },
+    { n: "Honey Lime Greens", p: "19.50", d: "greens, romaine, corn, beans, peppers, feta, corn chips, guacamole, honey lime vinaigrette" },
+    { n: "Jambalaya Bowl", p: "24.50", d: "prawns, chicken, chorizo, coconut rice, peppers, onions, corn, beans, cajun tomato, creole butter" },
+    { n: "Chili Chicken Bowl", p: "23.50", d: "sweet chili chicken, coconut rice, pickled cabbage, pineapple salsa, edamame, guac, sriracha mayo" },
+    { n: "My Big Fat Greek Bowl", p: "23.50", d: "souvlaki chicken, coconut rice, tomato, red onion, cucumber, peppers, pita chips, tzatziki" }
+  ]},
+  { cat: "Campfire Comforts", items: [
+    { n: "Spicy Mtn. Mac", p: "23.50", d: "house-made cheesy macaroni, jalapeno, garlic aioli, breadcrumbs, creole toast" },
+    { n: "Fried Chicken Dinner", p: "26.50", d: "fried chicken breast and drumstick, warm potato salad, coleslaw" },
+    { n: "Prawn Pesto Pasta", p: "26.50", d: "citrus prawns, linguine, creamy pesto, sun-dried tomato, grana padano, garlic bread" },
+    { n: "Bucket List Fried Chicken (family)", p: "52.00", d: "two breasts, four drumsticks, warm potato salad, coleslaw, crispy fries" }
+  ]},
+  { cat: "Little Explorers (Kids)", items: [
+    { n: "Chicken Nuggies", p: "12.00", d: "with fries, ketchup, juice or soda, ice cream" },
+    { n: "The Kevin McCallister (cheese pizza)", p: "12.00", d: "with juice or soda, ice cream" },
+    { n: "Burger Buddy", p: "12.00", d: "beef burger with fries, ketchup, juice or soda, ice cream" },
+    { n: "Easy Peasy Mac + Cheesy", p: "12.00", d: "creamy mac and cheese, juice or soda, ice cream" }
+  ]},
+  { cat: "Treats", items: [
+    { n: "Sweet Bae-gnets", p: "12.00", d: "fluffy dough squares, icing sugar, nutella + strawberry compote" },
+    { n: "Waffle Fried Oreos", p: "12.00", d: "oreos in waffle batter, strawberry compote" },
+    { n: "Cookies & Cream Jar", p: "12.00", d: "cocoa biscuits, vanilla cheesecake, whipped cream" }
+  ]},
+  { cat: "Beer (on tap)", items: [
+    { n: "Backyard Lite Lager (16oz)", p: "9.00", d: "light and easy-drinking" },
+    { n: "Knotty Blonde Ale (16oz)", p: "9.00", d: "crisp, clean & straightforward" },
+    { n: "Golden Hour Raspberry Sour (16oz)", p: "9.50", d: "vibrant & refreshingly tart" },
+    { n: "Lake Days Hazy Pale Ale (16oz)", p: "9.50", d: "bright & juicy" },
+    { n: "Fraser Valley Lager (16oz)", p: "9.00", d: "remarkably refreshing" },
+    { n: "Moon Dance Mango Wheat (16oz)", p: "9.50", d: "smooth tropical freshness" },
+    { n: "West Coast IPA (16oz)", p: "9.50", d: "light and easy-drinking" },
+    { n: "Sasquatch Stout (16oz)", p: "9.50", d: "chocolate, coffee & mystery" },
+    { n: "Beer Flight", p: "—", d: "ask server for current options" }
+  ]},
+  { cat: "Cocktails", items: [
+    { n: "Bellini", p: "11.00", d: "peach nectar, prosecco, peach schnapps, rum" },
+    { n: "Stargazer Sangria", p: "13.00", d: "red wine, rosé, cranberry, orange, brandy, bellini slush" },
+    { n: "Tasteful Nude", p: "9.00", d: "mandarin vodka, soda, bellini slush" },
+    { n: "Ol' Fashioned", p: "14.50", d: "bulleit bourbon, raw sugar, root beer bitters, orange zest" },
+    { n: "Lakeside Margarita", p: "13.00", d: "strawberry or lime, tequila, triple sec, lime, simple syrup" },
+    { n: "The Night Shaft", p: "11.00", d: "vanilla vodka, kahlua, baileys, cold brew, bae-gnet" },
+    { n: "Espresso Martini", p: "12.50", d: "vodka, kahlua, espresso, simple syrup, cocoa, beans" },
+    { n: "The Mojito", p: "11.50", d: "white rum, lime, fresh mint, simple syrup" },
+    { n: "Aperol Spritz", p: "13.00", d: "aperol, prosecco, soda, orange" },
+    { n: "Caesar", p: "11.50", d: "clamato, worcestershire, lime, tabasco, vodka, spice rim" },
+    { n: "Paloma Spritz", p: "13.00", d: "blanco tequila, galiano, grapefruit, lime, agave, soda" }
+  ]},
+  { cat: "Wine + Cider", items: [
+    { n: "Jackson Triggs Merlot (6oz)", p: "8.00", d: "okanagan valley" },
+    { n: "Jackson Triggs Sauv Blanc (6oz)", p: "8.00", d: "okanagan valley" },
+    { n: "See Ya Later Pinot Gris (6oz)", p: "10.00", d: "okanagan valley" },
+    { n: "See Ya Later Pinot Noir (6oz)", p: "11.50", d: "okanagan falls" },
+    { n: "Dirty Laundry Hush Rosé (6oz)", p: "11.00", d: "okanagan valley" },
+    { n: "Ruffino Prosecco (6oz)", p: "11.00", d: "treviso, italy" },
+    { n: "Lonetree Cider (16oz)", p: "12.00", d: "okanagan valley" }
+  ]},
+  { cat: "Zero Proof + Soft Drinks", items: [
+    { n: "Hibiscus Tea Mocktail", p: "9.00", d: "hibiscus, soda, honey, lime" },
+    { n: "No-jito", p: "9.50", d: "lime, mint, simple syrup, soda" },
+    { n: "Beyond Caesar (NA)", p: "9.50", d: "clamato, worcestershire, lime, tabasco, spice rim" },
+    { n: "Guava Passionfruit Fizz", p: "9.50", d: "guava passionfruit, vanilla syrup, lime, soda, orange" },
+    { n: "Phillips Iota Pilsner (NA)", p: "7.50", d: "light, smooth, easy-drinking" },
+    { n: "Phillips Iota Hazy IPA (NA)", p: "7.50", d: "juicy, smooth, hazy" },
+    { n: "Juice", p: "3.00", d: "orange, apple or cranberry" },
+    { n: "Soda", p: "3.50", d: "coke, diet coke, ginger ale, iced tea, sprite" },
+    { n: "Drip Coffee", p: "3.50", d: "" },
+    { n: "Cappuccino", p: "4.50", d: "" },
+    { n: "Mocha", p: "5.50", d: "" }
+  ]}
+];
+
+/* =============================================================
+   APP STATE & RENDER
+   ============================================================= */
+const peopleEl = document.getElementById('people');
+const totalPeopleEl = document.getElementById('totalPeople');
+const totalItemsEl = document.getElementById('totalItems');
+
+let personCounter = 0;
+
+function makePersonCard() {
+  personCounter++;
+  const id = `p${personCounter}`;
+  const card = document.createElement('div');
+  card.className = 'person-card';
+  card.dataset.personId = id;
+
+  const isFirst = peopleEl.children.length === 0;
+
+  card.innerHTML = `
+    <div class="person-header">
+      <div class="person-num">Person <span class="idx"></span></div>
+      ${!isFirst ? `<button class="remove-btn" data-action="remove">Remove</button>` : ''}
+    </div>
+    <div class="person-fields two-col">
+      <div>
+        <label class="field">Name</label>
+        <input type="text" class="p-name" placeholder="e.g. Sam (or 'Mom')" />
+      </div>
+      <div>
+        <label class="field">Dietary notes (optional)</label>
+        <input type="text" class="p-diet" placeholder="e.g. gluten-free, no nuts" />
+      </div>
+    </div>
+    <div class="person-fields">
+      <div>
+        <label class="field">Special requests (optional)</label>
+        <textarea class="p-notes" placeholder="e.g. sub fries for salad, no onions"></textarea>
+      </div>
+    </div>
+    <div class="categories">
+      ${MENU.map((cat, ci) => `
+        <details class="category" data-cat-idx="${ci}">
+          <summary>
+            <span class="cat-title">${cat.cat}</span>
+            <span class="cat-meta">
+              <span class="selected-pill" data-pill>0 selected</span>
+              <span class="chev">›</span>
+            </span>
+          </summary>
+          <div class="items">
+            ${cat.items.map((it, ii) => `
+              <label class="item" data-item>
+                <input type="checkbox" data-item-name="${it.n.replace(/"/g, '&quot;')}" data-item-price="${it.p}" />
+                <div class="item-body">
+                  <div class="item-row">
+                    <span class="item-name">${it.n}</span>
+                    <span class="item-price">${it.p === "—" ? "" : "$" + it.p}</span>
+                  </div>
+                  ${it.d ? `<div class="item-desc">${it.d}</div>` : ''}
+                </div>
+              </label>
+            `).join('')}
+          </div>
+        </details>
+      `).join('')}
+    </div>
+  `;
+
+  // Remove handler
+  const rm = card.querySelector('[data-action="remove"]');
+  if (rm) rm.addEventListener('click', () => {
+    card.remove();
+    refreshIndexes();
+    updateSummary();
+  });
+
+  // Checkbox handlers
+  card.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('.item').classList.toggle('checked', cb.checked);
+      // update category pill
+      const det = cb.closest('details.category');
+      const count = det.querySelectorAll('input[type="checkbox"]:checked').length;
+      const pill = det.querySelector('[data-pill]');
+      pill.textContent = `${count} selected`;
+      pill.classList.toggle('active', count > 0);
+      updateSummary();
+    });
+  });
+
+  peopleEl.appendChild(card);
+  refreshIndexes();
+  updateSummary();
+}
+
+function refreshIndexes() {
+  [...peopleEl.children].forEach((c, i) => {
+    c.querySelector('.idx').textContent = String(i + 1);
+  });
+}
+
+function updateSummary() {
+  const people = peopleEl.children.length;
+  const items = peopleEl.querySelectorAll('input[type="checkbox"]:checked').length;
+  totalPeopleEl.textContent = people;
+  totalItemsEl.textContent = items;
+}
+
+document.getElementById('addPerson').addEventListener('click', makePersonCard);
+
+// Init: one person card
+makePersonCard();
+
+// Setup shared sheet link if configured
+if (SHARED_SHEET_VIEW_URL) {
+  const box = document.getElementById('sheetLinkBox');
+  const link = document.getElementById('sheetLink');
+  link.href = SHARED_SHEET_VIEW_URL;
+  box.style.display = 'block';
+}
+
+/* =============================================================
+   SUBMIT
+   ============================================================= */
+const submitBtn = document.getElementById('submitBtn');
+const statusEl = document.getElementById('status');
+
+function setStatus(msg, kind) {
+  statusEl.textContent = msg;
+  statusEl.className = `status show ${kind}`;
+}
+function clearStatus() {
+  statusEl.className = 'status';
+  statusEl.textContent = '';
+}
+
+submitBtn.addEventListener('click', async () => {
+  clearStatus();
+  const submitter = document.getElementById('submitter').value.trim();
+  if (!submitter) {
+    setStatus("Please enter your name first.", "error");
+    document.getElementById('submitter').focus();
+    return;
+  }
+
+  const cards = [...peopleEl.children];
+  const submissions = [];
+
+  for (const card of cards) {
+    const name = card.querySelector('.p-name').value.trim();
+    const diet = card.querySelector('.p-diet').value.trim();
+    const notes = card.querySelector('.p-notes').value.trim();
+    const checks = [...card.querySelectorAll('input[type="checkbox"]:checked')];
+    if (!name) {
+      setStatus("Each person needs a name.", "error");
+      card.querySelector('.p-name').focus();
+      return;
+    }
+    if (checks.length === 0) {
+      setStatus(`${name} hasn't selected any items yet.`, "error");
+      return;
+    }
+    const items = checks.map(cb => ({
+      name: cb.dataset.itemName,
+      price: cb.dataset.itemPrice
+    }));
+    submissions.push({ name, diet, notes, items });
+  }
+
+  // Build payload — one row per person
+  const timestamp = new Date().toISOString();
+  const rows = submissions.map(p => ({
+    timestamp,
+    submitter,
+    person_name: p.name,
+    dietary_notes: p.diet,
+    special_requests: p.notes,
+    items: p.items.map(i => `${i.name} ($${i.price})`).join(' | '),
+    item_count: p.items.length,
+    estimated_total: p.items.reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0).toFixed(2)
+  }));
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting…";
+
+  try {
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.startsWith("PASTE_")) {
+      // No backend configured yet — show preview
+      console.log("Submission payload:", rows);
+      setStatus(
+        "✓ Submission captured (preview mode — Apps Script URL not configured yet). Check browser console for the data that would be sent.",
+        "success"
+      );
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Orders";
+      return;
+    }
+
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      // Apps Script web apps don't support custom headers via fetch CORS;
+      // sending as text/plain bypasses preflight. Apps Script reads e.postData.contents.
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ rows })
+    });
+
+    if (!res.ok) throw new Error("Server responded " + res.status);
+    setStatus(`✓ Submitted ${rows.length} order${rows.length > 1 ? 's' : ''}. Thanks, ${submitter}!`, "success");
+    submitBtn.textContent = "Submitted ✓";
+  } catch (err) {
+    console.error(err);
+    setStatus("Couldn't submit: " + err.message + ". Try again, or screenshot your selections.", "error");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Orders";
+  }
+});
+</script>
+</body>
+</html>
