@@ -49,6 +49,39 @@
     padding: 24px 16px 80px;
   }
 
+  /* WARNING BANNER */
+  .warning-banner {
+    background: linear-gradient(135deg, #8b2e1a 0%, #c1542a 100%);
+    color: #fff5e8;
+    border: 2px solid #f5b860;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    text-align: center;
+    box-shadow: 0 6px 24px rgba(193, 84, 42, .35);
+    position: relative;
+  }
+  .warning-banner::before {
+    content: "⚠";
+    display: block;
+    font-size: 32px;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .warning-banner h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .15em;
+    font-size: 18px;
+    margin: 0 0 8px;
+    color: #fff5e8;
+  }
+  .warning-banner p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #ffe8d4;
+  }
+
   /* HEADER */
   header.hero {
     text-align: center;
@@ -434,6 +467,11 @@
 <body>
 
 <div class="wrap">
+
+  <div class="warning-banner">
+    <h3>Heads up — orders already submitted</h3>
+    <p>The group's food order has already been placed with the restaurant. Submissions through this form may no longer be accepted. Please confirm directly with the organizer before relying on this.</p>
+  </div>
 
   <header class="hero">
     <div class="kicker">Old Yale Brewing — Abbotsford</div>
