@@ -281,6 +281,52 @@
     line-height: 1.4;
   }
 
+  /* MODIFIERS */
+  .mods {
+    margin: -2px 0 10px 30px;
+    padding: 12px 14px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    display: grid;
+    gap: 7px;
+  }
+  .mods-label {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: .15em;
+    font-size: 11px;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+  .mod {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    cursor: pointer;
+    padding: 4px 2px;
+    border-radius: 4px;
+  }
+  .mod:hover { background: rgba(232, 160, 74, .05); }
+  .mod input {
+    accent-color: var(--amber);
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .mod-label {
+    color: var(--text);
+    flex: 1;
+  }
+  .mod-price {
+    color: var(--amber);
+    font-weight: 600;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+
   /* ADD PERSON BTN */
   .add-person {
     width: 100%;
@@ -392,7 +438,10 @@
   <header class="hero">
     <div class="kicker">Old Yale Brewing — Abbotsford</div>
     <h1>What are you ordering?</h1>
-    <p class="sub">Pick your food &amp; drinks. Add as many family members as you need.</p>
+    <p class="sub">Pick your food in advance. Add as many family members as you need. Drinks will be ordered at the table.</p>
+    <p class="sub" style="margin-top:10px; font-size:13px;">
+      <a href="https://www.oldyalebrewing.com/abbotsford" target="_blank" rel="noopener" style="color:var(--amber); text-decoration:none; border-bottom:1px dotted var(--amber);">View full menu on oldyalebrewing.com ↗</a>
+    </p>
   </header>
 
   <!-- SUBMITTER -->
@@ -437,7 +486,14 @@ const MENU = [
   { cat: "Featured Eats", items: [
     { n: "Holy Perogi", p: "16.50", d: "potato cheddar perogies, caramelized onions, crispy bacon, sour cream" },
     { n: "Loaded Dirty Fries", p: "22.00", d: "birria beef, cheddar, mozza & monterey jack, gravy, pickled onions, lime crema, cilantro" },
-    { n: "Jalapeno Popper Smash Burger", p: "24.50", d: "two smash patties, jalapeno whipped cream cheese, mozza, jalapeno ranch, espresso bacon jam" },
+    { n: "Jalapeno Popper Smash Burger", p: "24.50", d: "two smash patties, jalapeno whipped cream cheese, mozza, jalapeno ranch, espresso bacon jam", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" },
+      { label: "Add jalapeno poppers", price: 5.00 }
+    ]},
     { n: "Mini Quesadillas", p: "18.50", d: "birria beef, cheddar, mozza & monterey jack, onion, consomme, lime" },
     { n: "Prawn Pesto Pizza", p: "25.50", d: "citrus marinated prawns, sun-dried tomatoes, creamy pesto, feta, mozza, garlic oil sauce" },
     { n: "Bibimbap Bowl", p: "25.00", d: "shaved beef, crispy fried rice, kimchi, edamame, pickled daikon, carrots, korean sauce, fried egg" }
@@ -455,10 +511,22 @@ const MENU = [
     { n: "Hot Chicken n' Pickles", p: "17.00", d: "crispy fried chicken bites, nashville spice, hot pickles, creamy dill" }
   ]},
   { cat: "Trailside Tacos", items: [
-    { n: "Fried Chicken Tacos", p: "19.50", d: "jalapeno ranch, elote salsa, feta, pickled onions, cilantro, tajin" },
-    { n: "Pulled Pork Tacos", p: "19.00", d: "pulled pork, coleslaw, pineapple salsa, chipotle aioli, cilantro" },
-    { n: "Steak Tacos", p: "19.50", d: "thinly sliced steak, elote salsa, red onion, feta, avocado crema, chipotle aioli" },
-    { n: "Grilled Prawn Tacos", p: "20.50", d: "grilled prawns, coleslaw, pineapple salsa, avocado crema, pickled onion" }
+    { n: "Fried Chicken Tacos", p: "19.50", d: "jalapeno ranch, elote salsa, feta, pickled onions, cilantro, tajin", mods: [
+      { label: "Add side of fries", price: 5.00 },
+      { label: "Add side of back porch greens", price: 5.00 }
+    ]},
+    { n: "Pulled Pork Tacos", p: "19.00", d: "pulled pork, coleslaw, pineapple salsa, chipotle aioli, cilantro", mods: [
+      { label: "Add side of fries", price: 5.00 },
+      { label: "Add side of back porch greens", price: 5.00 }
+    ]},
+    { n: "Steak Tacos", p: "19.50", d: "thinly sliced steak, elote salsa, red onion, feta, avocado crema, chipotle aioli", mods: [
+      { label: "Add side of fries", price: 5.00 },
+      { label: "Add side of back porch greens", price: 5.00 }
+    ]},
+    { n: "Grilled Prawn Tacos", p: "20.50", d: "grilled prawns, coleslaw, pineapple salsa, avocado crema, pickled onion", mods: [
+      { label: "Add side of fries", price: 5.00 },
+      { label: "Add side of back porch greens", price: 5.00 }
+    ]}
   ]},
   { cat: "Mt. Poutines", items: [
     { n: "Classic Poutine", p: "19.50", d: "fries, cheese curds, green onions, gravy" },
@@ -468,12 +536,49 @@ const MENU = [
     { n: "Poutine Flight (3)", p: "23.50", d: "choose any three mt. poutines" }
   ]},
   { cat: "Basecamp Burgers + Sammys", items: [
-    { n: "Let's Smash Burger", p: "21.50", d: "two angus smash patties, cheddar, onion, pickles, burger sauce, garlic aioli" },
-    { n: "In Da Clubhouse Sammy", p: "26.00", d: "crispy fried chicken, honey mustard slaw, thicc bacon, tomato, ciabatta" },
-    { n: "Happy Camper Burger", p: "24.00", d: "angus beef, thicc bacon, arugula, red onion, pickles, cheddar, burger sauce" },
-    { n: "Apple + Brie Sammy", p: "24.50", d: "grilled chicken, apple, brie, arugula, fruit jam, garlic aioli, sourdough" },
-    { n: "Hot Honey Fried Chicken Burger", p: "25.00", d: "fried chicken, coalho cheese, hot honey, arugula, garlic mayo" },
-    { n: "The Beef Dipper", p: "26.00", d: "slow cooked beef, caramelized onions, horseradish aioli, garlic toast, au jus" }
+    { n: "Let's Smash Burger", p: "21.50", d: "two angus smash patties, cheddar, onion, pickles, burger sauce, garlic aioli", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" }
+    ]},
+    { n: "In Da Clubhouse Sammy", p: "26.00", d: "crispy fried chicken, honey mustard slaw, thicc bacon, tomato, ciabatta", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" }
+    ]},
+    { n: "Happy Camper Burger", p: "24.00", d: "angus beef, thicc bacon, arugula, red onion, pickles, cheddar, burger sauce", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" },
+      { label: "Swap to black bean patty (vegan)", price: 0 }
+    ]},
+    { n: "Apple + Brie Sammy", p: "24.50", d: "grilled chicken, apple, brie, arugula, fruit jam, garlic aioli, sourdough", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" }
+    ]},
+    { n: "Hot Honey Fried Chicken Burger", p: "25.00", d: "fried chicken, coalho cheese, hot honey, arugula, garlic mayo", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" }
+    ]},
+    { n: "The Beef Dipper", p: "26.00", d: "slow cooked beef, caramelized onions, horseradish aioli, garlic toast, au jus", mods: [
+      { label: "Side: fries (default)", price: 0, group: "side", default: true },
+      { label: "Side: back porch greens", price: 0, group: "side" },
+      { label: "Upgrade side: yam fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: boujee fries", price: 3.50, group: "side" },
+      { label: "Upgrade side: caesar salad", price: 3.50, group: "side" }
+    ]}
   ]},
   { cat: "West Coast Pizza", items: [
     { n: "Hiker's Hot Honey", p: "24.50", d: "spicy soppressata, mozza, tomato sauce, roasted garlic, chili honey" },
@@ -483,21 +588,33 @@ const MENU = [
     { n: "Sausage Fest", p: "25.50", d: "chorizo, spicy soppressata, ham, bacon, mozza, tomato sauce" }
   ]},
   { cat: "Greens + Bowls", items: [
-    { n: "Campfire Caesar", p: "18.50", d: "romaine, croutons, fried capers, grana padano, caesar dressing" },
-    { n: "Honey Lime Greens", p: "19.50", d: "greens, romaine, corn, beans, peppers, feta, corn chips, guacamole, honey lime vinaigrette" },
+    { n: "Campfire Caesar", p: "18.50", d: "romaine, croutons, fried capers, grana padano, caesar dressing", mods: [
+      { label: "Add grilled chicken", price: 5.00, group: "protein" },
+      { label: "Add campfire chicken", price: 5.00, group: "protein" }
+    ]},
+    { n: "Honey Lime Greens", p: "19.50", d: "greens, romaine, corn, beans, peppers, feta, corn chips, guacamole, honey lime vinaigrette", mods: [
+      { label: "Add grilled chicken", price: 5.00, group: "protein" },
+      { label: "Add campfire chicken", price: 5.00, group: "protein" }
+    ]},
     { n: "Jambalaya Bowl", p: "24.50", d: "prawns, chicken, chorizo, coconut rice, peppers, onions, corn, beans, cajun tomato, creole butter" },
     { n: "Chili Chicken Bowl", p: "23.50", d: "sweet chili chicken, coconut rice, pickled cabbage, pineapple salsa, edamame, guac, sriracha mayo" },
     { n: "My Big Fat Greek Bowl", p: "23.50", d: "souvlaki chicken, coconut rice, tomato, red onion, cucumber, peppers, pita chips, tzatziki" }
   ]},
   { cat: "Campfire Comforts", items: [
-    { n: "Spicy Mtn. Mac", p: "23.50", d: "house-made cheesy macaroni, jalapeno, garlic aioli, breadcrumbs, creole toast" },
+    { n: "Spicy Mtn. Mac", p: "23.50", d: "house-made cheesy macaroni, jalapeno, garlic aioli, breadcrumbs, creole toast", mods: [
+      { label: "Add pulled pork", price: 6.00 }
+    ]},
     { n: "Fried Chicken Dinner", p: "26.50", d: "fried chicken breast and drumstick, warm potato salad, coleslaw" },
     { n: "Prawn Pesto Pasta", p: "26.50", d: "citrus prawns, linguine, creamy pesto, sun-dried tomato, grana padano, garlic bread" },
-    { n: "Bucket List Fried Chicken (family)", p: "52.00", d: "two breasts, four drumsticks, warm potato salad, coleslaw, crispy fries" }
+    { n: "Bucket List Fried Chicken (family)", p: "52.00", d: "two breasts, four drumsticks, warm potato salad, coleslaw, crispy fries", mods: [
+      { label: "Make it Nashville fried", price: 2.00 }
+    ]}
   ]},
   { cat: "Little Explorers (Kids)", items: [
     { n: "Chicken Nuggies", p: "12.00", d: "with fries, ketchup, juice or soda, ice cream" },
-    { n: "The Kevin McCallister (cheese pizza)", p: "12.00", d: "with juice or soda, ice cream" },
+    { n: "The Kevin McCallister (cheese pizza)", p: "12.00", d: "with juice or soda, ice cream", mods: [
+      { label: "Swap to ham & pineapple", price: 0 }
+    ]},
     { n: "Burger Buddy", p: "12.00", d: "beef burger with fries, ketchup, juice or soda, ice cream" },
     { n: "Easy Peasy Mac + Cheesy", p: "12.00", d: "creamy mac and cheese, juice or soda, ice cream" }
   ]},
@@ -505,52 +622,6 @@ const MENU = [
     { n: "Sweet Bae-gnets", p: "12.00", d: "fluffy dough squares, icing sugar, nutella + strawberry compote" },
     { n: "Waffle Fried Oreos", p: "12.00", d: "oreos in waffle batter, strawberry compote" },
     { n: "Cookies & Cream Jar", p: "12.00", d: "cocoa biscuits, vanilla cheesecake, whipped cream" }
-  ]},
-  { cat: "Beer (on tap)", items: [
-    { n: "Backyard Lite Lager (16oz)", p: "9.00", d: "light and easy-drinking" },
-    { n: "Knotty Blonde Ale (16oz)", p: "9.00", d: "crisp, clean & straightforward" },
-    { n: "Golden Hour Raspberry Sour (16oz)", p: "9.50", d: "vibrant & refreshingly tart" },
-    { n: "Lake Days Hazy Pale Ale (16oz)", p: "9.50", d: "bright & juicy" },
-    { n: "Fraser Valley Lager (16oz)", p: "9.00", d: "remarkably refreshing" },
-    { n: "Moon Dance Mango Wheat (16oz)", p: "9.50", d: "smooth tropical freshness" },
-    { n: "West Coast IPA (16oz)", p: "9.50", d: "light and easy-drinking" },
-    { n: "Sasquatch Stout (16oz)", p: "9.50", d: "chocolate, coffee & mystery" },
-    { n: "Beer Flight", p: "—", d: "ask server for current options" }
-  ]},
-  { cat: "Cocktails", items: [
-    { n: "Bellini", p: "11.00", d: "peach nectar, prosecco, peach schnapps, rum" },
-    { n: "Stargazer Sangria", p: "13.00", d: "red wine, rosé, cranberry, orange, brandy, bellini slush" },
-    { n: "Tasteful Nude", p: "9.00", d: "mandarin vodka, soda, bellini slush" },
-    { n: "Ol' Fashioned", p: "14.50", d: "bulleit bourbon, raw sugar, root beer bitters, orange zest" },
-    { n: "Lakeside Margarita", p: "13.00", d: "strawberry or lime, tequila, triple sec, lime, simple syrup" },
-    { n: "The Night Shaft", p: "11.00", d: "vanilla vodka, kahlua, baileys, cold brew, bae-gnet" },
-    { n: "Espresso Martini", p: "12.50", d: "vodka, kahlua, espresso, simple syrup, cocoa, beans" },
-    { n: "The Mojito", p: "11.50", d: "white rum, lime, fresh mint, simple syrup" },
-    { n: "Aperol Spritz", p: "13.00", d: "aperol, prosecco, soda, orange" },
-    { n: "Caesar", p: "11.50", d: "clamato, worcestershire, lime, tabasco, vodka, spice rim" },
-    { n: "Paloma Spritz", p: "13.00", d: "blanco tequila, galiano, grapefruit, lime, agave, soda" }
-  ]},
-  { cat: "Wine + Cider", items: [
-    { n: "Jackson Triggs Merlot (6oz)", p: "8.00", d: "okanagan valley" },
-    { n: "Jackson Triggs Sauv Blanc (6oz)", p: "8.00", d: "okanagan valley" },
-    { n: "See Ya Later Pinot Gris (6oz)", p: "10.00", d: "okanagan valley" },
-    { n: "See Ya Later Pinot Noir (6oz)", p: "11.50", d: "okanagan falls" },
-    { n: "Dirty Laundry Hush Rosé (6oz)", p: "11.00", d: "okanagan valley" },
-    { n: "Ruffino Prosecco (6oz)", p: "11.00", d: "treviso, italy" },
-    { n: "Lonetree Cider (16oz)", p: "12.00", d: "okanagan valley" }
-  ]},
-  { cat: "Zero Proof + Soft Drinks", items: [
-    { n: "Hibiscus Tea Mocktail", p: "9.00", d: "hibiscus, soda, honey, lime" },
-    { n: "No-jito", p: "9.50", d: "lime, mint, simple syrup, soda" },
-    { n: "Beyond Caesar (NA)", p: "9.50", d: "clamato, worcestershire, lime, tabasco, spice rim" },
-    { n: "Guava Passionfruit Fizz", p: "9.50", d: "guava passionfruit, vanilla syrup, lime, soda, orange" },
-    { n: "Phillips Iota Pilsner (NA)", p: "7.50", d: "light, smooth, easy-drinking" },
-    { n: "Phillips Iota Hazy IPA (NA)", p: "7.50", d: "juicy, smooth, hazy" },
-    { n: "Juice", p: "3.00", d: "orange, apple or cranberry" },
-    { n: "Soda", p: "3.50", d: "coke, diet coke, ginger ale, iced tea, sprite" },
-    { n: "Drip Coffee", p: "3.50", d: "" },
-    { n: "Cappuccino", p: "4.50", d: "" },
-    { n: "Mocha", p: "5.50", d: "" }
   ]}
 ];
 
@@ -604,18 +675,48 @@ function makePersonCard() {
             </span>
           </summary>
           <div class="items">
-            ${cat.items.map((it, ii) => `
-              <label class="item" data-item>
-                <input type="checkbox" data-item-name="${it.n.replace(/"/g, '&quot;')}" data-item-price="${it.p}" />
-                <div class="item-body">
-                  <div class="item-row">
-                    <span class="item-name">${it.n}</span>
-                    <span class="item-price">${it.p === "—" ? "" : "$" + it.p}</span>
+            ${cat.items.map((it, ii) => {
+              const itemKey = `${id}-c${ci}-i${ii}`;
+              const hasMods = Array.isArray(it.mods) && it.mods.length > 0;
+              return `
+              <div class="item-wrap">
+                <label class="item" data-item>
+                  <input type="checkbox" data-role="item" data-item-name="${it.n.replace(/"/g, '&quot;')}" data-item-price="${it.p}" data-item-key="${itemKey}" />
+                  <div class="item-body">
+                    <div class="item-row">
+                      <span class="item-name">${it.n}</span>
+                      <span class="item-price">${it.p === "—" ? "" : "$" + it.p}</span>
+                    </div>
+                    ${it.d ? `<div class="item-desc">${it.d}</div>` : ''}
                   </div>
-                  ${it.d ? `<div class="item-desc">${it.d}</div>` : ''}
-                </div>
-              </label>
-            `).join('')}
+                </label>
+                ${hasMods ? `
+                  <div class="mods" data-mods-for="${itemKey}" hidden>
+                    <div class="mods-label">Customize:</div>
+                    ${it.mods.map((m, mi) => {
+                      const inputName = m.group ? `mod-${itemKey}-${m.group}` : '';
+                      const inputType = m.group ? 'radio' : 'checkbox';
+                      const priceLabel = m.price > 0 ? `+$${m.price.toFixed(2)}` : (m.price < 0 ? `-$${Math.abs(m.price).toFixed(2)}` : '');
+                      return `
+                        <label class="mod">
+                          <input
+                            type="${inputType}"
+                            ${m.group ? `name="${inputName}"` : ''}
+                            data-role="mod"
+                            data-mod-label="${m.label.replace(/"/g, '&quot;')}"
+                            data-mod-price="${m.price.toFixed(2)}"
+                            data-mod-group="${m.group || ''}"
+                            ${m.default ? 'checked' : ''}
+                          />
+                          <span class="mod-label">${m.label}</span>
+                          ${priceLabel ? `<span class="mod-price">${priceLabel}</span>` : ''}
+                        </label>
+                      `;
+                    }).join('')}
+                  </div>
+                ` : ''}
+              </div>
+            `;}).join('')}
           </div>
         </details>
       `).join('')}
@@ -630,18 +731,29 @@ function makePersonCard() {
     updateSummary();
   });
 
-  // Checkbox handlers
-  card.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+  // Item checkbox handlers (only the main item, not modifiers)
+  card.querySelectorAll('input[data-role="item"]').forEach(cb => {
     cb.addEventListener('change', () => {
       cb.closest('.item').classList.toggle('checked', cb.checked);
-      // update category pill
+      // show/hide modifiers panel for this item
+      const itemKey = cb.dataset.itemKey;
+      const modsPanel = card.querySelector(`[data-mods-for="${itemKey}"]`);
+      if (modsPanel) {
+        modsPanel.hidden = !cb.checked;
+      }
+      // update category pill (count only item checkboxes)
       const det = cb.closest('details.category');
-      const count = det.querySelectorAll('input[type="checkbox"]:checked').length;
+      const count = det.querySelectorAll('input[data-role="item"]:checked').length;
       const pill = det.querySelector('[data-pill]');
       pill.textContent = `${count} selected`;
       pill.classList.toggle('active', count > 0);
       updateSummary();
     });
+  });
+
+  // Modifier change handlers — just to recalc totals (no count change)
+  card.querySelectorAll('input[data-role="mod"]').forEach(mb => {
+    mb.addEventListener('change', updateSummary);
   });
 
   peopleEl.appendChild(card);
@@ -657,7 +769,7 @@ function refreshIndexes() {
 
 function updateSummary() {
   const people = peopleEl.children.length;
-  const items = peopleEl.querySelectorAll('input[type="checkbox"]:checked').length;
+  const items = peopleEl.querySelectorAll('input[data-role="item"]:checked').length;
   totalPeopleEl.textContent = people;
   totalItemsEl.textContent = items;
 }
@@ -706,7 +818,7 @@ submitBtn.addEventListener('click', async () => {
     const name = card.querySelector('.p-name').value.trim();
     const diet = card.querySelector('.p-diet').value.trim();
     const notes = card.querySelector('.p-notes').value.trim();
-    const checks = [...card.querySelectorAll('input[type="checkbox"]:checked')];
+    const checks = [...card.querySelectorAll('input[data-role="item"]:checked')];
     if (!name) {
       setStatus("Each person needs a name.", "error");
       card.querySelector('.p-name').focus();
@@ -716,10 +828,29 @@ submitBtn.addEventListener('click', async () => {
       setStatus(`${name} hasn't selected any items yet.`, "error");
       return;
     }
-    const items = checks.map(cb => ({
-      name: cb.dataset.itemName,
-      price: cb.dataset.itemPrice
-    }));
+    const items = checks.map(cb => {
+      const itemKey = cb.dataset.itemKey;
+      const basePrice = parseFloat(cb.dataset.itemPrice) || 0;
+      const modsPanel = card.querySelector(`[data-mods-for="${itemKey}"]`);
+      const mods = [];
+      let modTotal = 0;
+      if (modsPanel) {
+        modsPanel.querySelectorAll('input[data-role="mod"]:checked').forEach(mb => {
+          const lbl = mb.dataset.modLabel;
+          const pr = parseFloat(mb.dataset.modPrice) || 0;
+          // skip default "free" choices to keep output clean — only show non-default or priced
+          // but always include non-zero prices, and include named non-default group picks
+          mods.push({ label: lbl, price: pr });
+          modTotal += pr;
+        });
+      }
+      return {
+        name: cb.dataset.itemName,
+        price: cb.dataset.itemPrice,
+        mods,
+        totalPrice: (basePrice + modTotal).toFixed(2)
+      };
+    });
     submissions.push({ name, diet, notes, items });
   }
 
@@ -731,9 +862,12 @@ submitBtn.addEventListener('click', async () => {
     person_name: p.name,
     dietary_notes: p.diet,
     special_requests: p.notes,
-    items: p.items.map(i => `${i.name} ($${i.price})`).join(' | '),
+    items: p.items.map(i => {
+      const modStr = i.mods.length ? ` [${i.mods.map(m => m.label + (m.price ? ` +$${m.price.toFixed(2)}` : '')).join(', ')}]` : '';
+      return `${i.name} ($${i.totalPrice})${modStr}`;
+    }).join(' | '),
     item_count: p.items.length,
-    estimated_total: p.items.reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0).toFixed(2)
+    estimated_total: p.items.reduce((sum, i) => sum + parseFloat(i.totalPrice), 0).toFixed(2)
   }));
 
   submitBtn.disabled = true;
